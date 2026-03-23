@@ -1,12 +1,9 @@
-import React from 'react'
-import { useRef } from 'react';
+import React from "react";
+import { useRef } from "react";
 import axios from "../axiosConfig";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "./Login.css";
 
-
-
-  
- 
 function Login() {
   const navigate = useNavigate();
   const emailDom = useRef();
@@ -22,7 +19,7 @@ function Login() {
       return;
     }
     try {
-const {data}= await axios.post("/users/login", {
+      const { data } = await axios.post("/users/login", {
         email: emailValue,
         PASSWORD: passValue,
       });
@@ -30,37 +27,44 @@ const {data}= await axios.post("/users/login", {
 
       localStorage.setItem("token", data.token);
 
-
-
       navigate("/");
-      console.log(data)
+      console.log(data);
     } catch (error) {
       alert(error?.response?.data?.msg);
       console.log(error.response);
     }
   }
 
-
-  
   return (
-    <section>
-      {" "}
-      <form onSubmit={handleSubmit}>
-          
+    <section className="login-section">
+      <form className="login-form" onSubmit={handleSubmit}>
         <div>
-          <span>email :---</span>
-          <input ref={emailDom} type="email" placeholder="email" />
+          <span>Email:</span>
+          <input
+            ref={emailDom}
+            type="email"
+            className="input-field"
+            placeholder="Enter your email"
+          />
         </div>
-        <br />
         <div>
-          <span>password :---</span>
-          <input ref={passwordDom} type="password" placeholder="password" />
+          <span>Password:</span>
+          <input
+            ref={passwordDom}
+            type="password"
+            className="input-field"
+            placeholder="Enter your password"
+          />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-btn">
+          Login
+        </button>
       </form>
-      <Link to={"/register"}>register</Link>
+      <div className="register-link">
+        <Link to="/register">Don't have an account? Register</Link>
+      </div>
     </section>
   );
 }
 
-export default Login
+export default Login;
