@@ -1,12 +1,13 @@
 import express from "express";
+import {
+  getAnswersForQuestion,
+  postAnswer,
+} from "../controllers/answerController.js";
+import authMiddleware from "../middleware/auth.js";
+
 const router = express.Router();
-// import authMiddleware from '../Middleware/authMiddleware.js';
 
-
-router.post("/all-answer", (req, res) => {
-    res.send("all answer route");});
-
-
-
+router.get("/:question_id", getAnswersForQuestion);
+router.post("/", authMiddleware, postAnswer);
 
 export default router;
