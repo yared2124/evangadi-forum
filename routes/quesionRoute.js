@@ -3,7 +3,7 @@ import {
   getAllQuestions,
   getSingleQuestion,
   postQuestion,
-} from "../controllers/questionController.js";
+} from "../controller/questionController.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
