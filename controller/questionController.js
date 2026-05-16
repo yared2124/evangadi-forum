@@ -2,7 +2,7 @@ import dbConection from "../db/dbconfig.js";
 
 export const getAllQuestions = async (req, res) => {
   try {
-    const [questions] = await db.query(`
+    const [questions] = await dbConection.query(`
       SELECT q.id as question_id, q.title, q.description as content,
              u.username as user_name, q.created_at
       FROM questionTabel q
@@ -30,7 +30,7 @@ export const getSingleQuestion = async (req, res) => {
   const questionId = req.params.question_id;
 
   try {
-    const [questions] = await db.query(
+    const [questions] = await dbConection.query(
       `SELECT q.id as question_id, q.title, q.description as content,
               q.user_id, q.created_at
        FROM questionTabel q
@@ -66,7 +66,7 @@ export const postQuestion = async (req, res) => {
   }
 
   try {
-    await db.query(
+    await dbConection.query(
       "INSERT INTO questionTabel (title, description, user_id) VALUES (?, ?, ?)",
       [title, description, userId],
     );
