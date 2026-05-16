@@ -28,4 +28,3 @@ A full-stack community forum where users can ask questions, share knowledge, and
 - JSON Web Tokens (JWT)
 - bcrypt (password hashing)
 
-## 📁 Project Structure
