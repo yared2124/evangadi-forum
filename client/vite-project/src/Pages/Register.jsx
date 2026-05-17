@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import axios from "../axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
-import "../Pages/Register.css";
+import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -45,66 +45,73 @@ function Register() {
     }
   }
   return (
-    <section className="section">
-      <form className="myform" onSubmit={handleSubmit}>
-        <div className="username">
-          <span className="span">user name </span>
-          <input
-            className="span"
-            ref={userNameDom}
-            type="text"
-            placeholder="username"
-          />
+    <div className="page-shell register-page">
+      <section className="glass-panel register-section">
+        <div className="panel-header">
+          <span>Create account</span>
+          <h1>Join the community</h1>
+          <p>
+            Register with a polished form experience built for modern
+            developers.
+          </p>
         </div>
-        <br />
-        <div>
-          <span className="span">first name </span>
-          <input
-            className="span"
-            ref={firstNameDom}
-            type="text"
-            placeholder="first name"
-          />
+        <form className="register-form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>User name</label>
+            <input
+              ref={userNameDom}
+              type="text"
+              className="input-field"
+              placeholder="username"
+            />
+          </div>
+          <div className="input-double">
+            <div className="input-group">
+              <label>First name</label>
+              <input
+                ref={firstNameDom}
+                type="text"
+                className="input-field"
+                placeholder="first name"
+              />
+            </div>
+            <div className="input-group">
+              <label>Last name</label>
+              <input
+                ref={lastNameDom}
+                type="text"
+                className="input-field"
+                placeholder="last name"
+              />
+            </div>
+          </div>
+          <div className="input-group">
+            <label>Email</label>
+            <input
+              ref={emailDom}
+              type="email"
+              className="input-field"
+              placeholder="email"
+            />
+          </div>
+          <div className="input-group">
+            <label>Password</label>
+            <input
+              ref={passwordDom}
+              type="password"
+              className="input-field"
+              placeholder="password"
+            />
+          </div>
+          <button className="register-btn" type="submit">
+            Register
+          </button>
+        </form>
+        <div className="register-footer">
+          <Link to="/login">Already have an account? Login</Link>
         </div>
-        <br />
-        <div>
-          <span className="span">last name </span>
-          <input
-            className="span"
-            ref={lastNameDom}
-            type="text"
-            placeholder="last name"
-          />
-        </div>
-        <br />
-        <div>
-          <span className="span">email </span>
-          <input
-            className="span"
-            ref={emailDom}
-            type="email"
-            placeholder="email"
-          />
-        </div>
-        <br />
-        <div>
-          <span className="span">password </span>
-          <input
-            className="span"
-            ref={passwordDom}
-            type="password"
-            placeholder="password"
-          />
-        </div>
-        <button className="button" type="submit">
-          Register
-        </button>
-      </form>
-      <Link to={"/login"} className="login">
-        {" "}
-        login
-      </Link>
-    </section>
+      </section>
+    </div>
   );
 }
 
