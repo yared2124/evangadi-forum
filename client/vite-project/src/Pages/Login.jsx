@@ -36,34 +36,40 @@ function Login() {
   }
 
   return (
-    <section className="login-section">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div>
-          <span>Email:</span>
-          <input
-            ref={emailDom}
-            type="email"
-            className="input-field"
-            placeholder="Enter your email"
-          />
+    <div className="page-shell login-page">
+      <section className="glass-panel login-section">
+        <div className="panel-header">
+          <span>Sign in</span>
+          <h1>Welcome Back</h1>
         </div>
-        <div>
-          <span>Password:</span>
-          <input
-            ref={passwordDom}
-            type="password"
-            className="input-field"
-            placeholder="Enter your password"
-          />
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>Email</label>
+            <input
+              ref={emailDom}
+              type="email"
+              className="input-field"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="input-group">
+            <label>Password</label>
+            <input
+              ref={passwordDom}
+              type="password"
+              className="input-field"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+        </form>
+        <div className="register-link">
+          <Link to="/register">Don't have an account? Register</Link>
         </div>
-        <button type="submit" className="login-btn">
-          Login
-        </button>
-      </form>
-      <div className="register-link">
-        <Link to="/register">Don't have an account? Register</Link>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 
