@@ -33,13 +33,13 @@ function App() {
 
   return (
     <AppState.Provider value={{ user, setuser }}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <div className="app-shell">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
     </AppState.Provider>
   );
 }
