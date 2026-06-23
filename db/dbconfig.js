@@ -1,22 +1,16 @@
+import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+
 dotenv.config();
-import mysql2 from "mysql2";
 
-const dbConection = mysql2.createPool({
-  user: process.env.USER,
-  database:process.env.DATABASE,
-  host: process.env.HOST,
-  password: process.env.PASSWORD,
+const pool = mysql.createPool({
+  host: process.env.HOST || "localhost",
+  user: process.env.USER || "root",
+  password: process.env.PASSWORD || "",
+  database: process.env.DATABASE || "evangadi-db",
+  waitForConnections: true,
   connectionLimit: 10,
-});
-dbConection.execute("select 'test' ", (error, result) => {
-  if (error) {
-    console.log(error.message);
-  } else {
-    console.log(result);
-
-   
-  }
+  queueLimit: 0,
 });
 
-export default dbConection.promise();
+export default pool;
