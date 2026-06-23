@@ -1,10 +1,13 @@
-import db from "../config/db.js";
+import db from "../db/dbconfig.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // ==================== AUTH ENDPOINTS ====================
 
-// POST /api/user/register
+// POST /api/users/register
 export const register = async (req, res) => {
   try {
     const { username, first_name, last_name, email, password } = req.body;
@@ -47,8 +50,8 @@ export const register = async (req, res) => {
     // Insert user
     const [result] = await db.query(
       `INSERT INTO userTable 
-       (username, first_name, last_name, email, password_hash) 
-       VALUES (?, ?, ?, ?, ?)`,
+             (username, first_name, last_name, email, password_hash) 
+             VALUES (?, ?, ?, ?, ?)`,
       [username, first_name, last_name, email, hashedPassword],
     );
 
@@ -71,7 +74,7 @@ export const register = async (req, res) => {
   }
 };
 
-// POST /api/user/login
+// POST /api/users/login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -113,7 +116,11 @@ export const login = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
+      {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "7d" },
     );
@@ -140,7 +147,7 @@ export const login = async (req, res) => {
   }
 };
 
-// GET /api/user/checkUser
+// GET /api/users/checkUser
 export const checkUser = async (req, res) => {
   try {
     // User is already attached to req by auth middleware
@@ -165,12 +172,12 @@ export const checkUser = async (req, res) => {
 
 // ==================== USER MANAGEMENT ENDPOINTS ====================
 
-// GET /api/user/profile
+// GET /api/users/profile
 export const getProfile = async (req, res) => {
   try {
     const [users] = await db.query(
       `SELECT id, username, first_name, last_name, email, created_at 
-       FROM userTable WHERE id = ?`,
+             FROM userTable WHERE id = ?`,
       [req.user.id],
     );
 
@@ -196,7 +203,7 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// PUT /api/user/profile
+// PUT /api/users/profile
 export const updateProfile = async (req, res) => {
   try {
     const { first_name, last_name, email, username } = req.body;
@@ -206,7 +213,7 @@ export const updateProfile = async (req, res) => {
     if (email || username) {
       const [existing] = await db.query(
         `SELECT id FROM userTable 
-         WHERE (email = ? OR username = ?) AND id != ?`,
+                 WHERE (email = ? OR username = ?) AND id != ?`,
         [email, username, userId],
       );
 
@@ -268,7 +275,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// DELETE /api/user/account
+// DELETE /api/users/account
 export const deleteAccount = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -290,16 +297,16 @@ export const deleteAccount = async (req, res) => {
   }
 };
 
-// GET /api/user/questions
+// GET /api/users/questions
 export const getUserQuestions = async (req, res) => {
   try {
     const userId = req.user.id;
 
     const [questions] = await db.query(
       `SELECT id, title, description, created_at 
-       FROM questionTabel 
-       WHERE user_id = ? 
-       ORDER BY created_at DESC`,
+             FROM questionTabel 
+             WHERE user_id = ? 
+             ORDER BY created_at DESC`,
       [userId],
     );
 
@@ -317,18 +324,18 @@ export const getUserQuestions = async (req, res) => {
   }
 };
 
-// GET /api/user/answers
+// GET /api/users/answers
 export const getUserAnswers = async (req, res) => {
   try {
     const userId = req.user.id;
 
     const [answers] = await db.query(
       `SELECT a.id, a.answer, a.question_id, a.created_at,
-              q.title as question_title
-       FROM answerTable a
-       JOIN questionTabel q ON a.question_id = q.id
-       WHERE a.user_id = ? 
-       ORDER BY a.created_at DESC`,
+                    q.title as question_title
+             FROM answerTable a
+             JOIN questionTabel q ON a.question_id = q.id
+             WHERE a.user_id = ? 
+             ORDER BY a.created_at DESC`,
       [userId],
     );
 
