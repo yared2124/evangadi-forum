@@ -1,17 +1,28 @@
 import express from "express";
+import {
+  register,
+  login,
+  checkUser,
+  getProfile,
+  updateProfile,
+  deleteAccount,
+  getUserQuestions,
+  getUserAnswers,
+} from "../controllers/userController.js";
+import authMiddleware from "../middleware/auth.js";
+
 const router = express.Router();
-// authenthication middleware
-import authMiddleware from '../Middleware/authMiddleware.js';
 
-// user controllers
-import { register, login, checkUser } from "../controller/userController.js";
-
-// registration route
+// Public routes
 router.post("/register", register);
-// login route
 router.post("/login", login);
-// check user
-router.get("/check", authMiddleware, checkUser);
 
-export default router 
+// Protected routes
+router.get("/checkUser", authMiddleware, checkUser);
+router.get("/profile", authMiddleware, getProfile);
+router.put("/profile", authMiddleware, updateProfile);
+router.delete("/account", authMiddleware, deleteAccount);
+router.get("/questions", authMiddleware, getUserQuestions);
+router.get("/answers", authMiddleware, getUserAnswers);
 
+export default router;
