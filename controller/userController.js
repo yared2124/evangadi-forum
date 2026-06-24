@@ -150,7 +150,6 @@ export const login = async (req, res) => {
 // GET /api/users/checkUser
 export const checkUser = async (req, res) => {
   try {
-    // User is already attached to req by auth middleware
     res.status(200).json({
       success: true,
       message: "Valid user",
@@ -169,8 +168,6 @@ export const checkUser = async (req, res) => {
     });
   }
 };
-
-// ==================== USER MANAGEMENT ENDPOINTS ====================
 
 // GET /api/users/profile
 export const getProfile = async (req, res) => {
@@ -279,8 +276,6 @@ export const updateProfile = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Delete user (cascading will delete questions and answers)
     await db.query("DELETE FROM userTable WHERE id = ?", [userId]);
 
     res.status(200).json({
