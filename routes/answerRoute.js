@@ -1,20 +1,18 @@
 import express from "express";
 import {
   getAnswersForQuestion,
-  getSingleAnswer,
   postAnswer,
   updateAnswer,
   deleteAnswer,
 } from "../controllers/answerController.js";
-import authMiddleware from "../middleware/auth.js";
+import authMiddleware from "../Middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Public routes
+// Public route (no authentication required)
 router.get("/:question_id", getAnswersForQuestion);
-router.get("/single/:answer_id", getSingleAnswer);
 
-// Protected routes
+// Protected routes (authentication required)
 router.post("/", authMiddleware, postAnswer);
 router.put("/:answer_id", authMiddleware, updateAnswer);
 router.delete("/:answer_id", authMiddleware, deleteAnswer);
