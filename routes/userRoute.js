@@ -9,15 +9,15 @@ import {
   getUserQuestions,
   getUserAnswers,
 } from "../controllers/userController.js";
-import authMiddleware from "../middleware/auth.js";
+import authMiddleware from "../Middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Public routes
+// Public routes (no authentication required)
 router.post("/register", register);
 router.post("/login", login);
 
-// Protected routes
+// Protected routes (authentication required)
 router.get("/checkUser", authMiddleware, checkUser);
 router.get("/profile", authMiddleware, getProfile);
 router.put("/profile", authMiddleware, updateProfile);
