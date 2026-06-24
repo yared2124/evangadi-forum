@@ -1,23 +1,21 @@
-import db from "../config/db.js";
+import db from "../db/dbconfig.js";
 
-// ==================== QUESTION ENDPOINTS ====================
-
-// GET /api/question
+// GET /api/questions/
 export const getAllQuestions = async (req, res) => {
   try {
     const [questions] = await db.query(`
-      SELECT 
-        q.id as question_id,
-        q.title,
-        q.description as content,
-        u.username as user_name,
-        u.id as user_id,
-        q.created_at,
-        (SELECT COUNT(*) FROM answerTable WHERE question_id = q.id) as answer_count
-      FROM questionTabel q
-      JOIN userTable u ON q.user_id = u.id
-      ORDER BY q.created_at DESC
-    `);
+            SELECT 
+                q.id as question_id,
+                q.title,
+                q.description as content,
+                u.username as user_name,
+                u.id as user_id,
+                q.created_at,
+                (SELECT COUNT(*) FROM answerTable WHERE question_id = q.id) as answer_count
+            FROM questionTabel q
+            JOIN userTable u ON q.user_id = u.id
+            ORDER BY q.created_at DESC
+        `);
 
     if (questions.length === 0) {
       return res.status(404).json({
@@ -44,7 +42,7 @@ export const getAllQuestions = async (req, res) => {
   }
 };
 
-// GET /api/question/:question_id
+// GET /api/questions/:question_id
 export const getSingleQuestion = async (req, res) => {
   try {
     const questionId = req.params.question_id;
@@ -59,18 +57,18 @@ export const getSingleQuestion = async (req, res) => {
 
     const [questions] = await db.query(
       `
-      SELECT 
-        q.id as question_id,
-        q.title,
-        q.description as content,
-        q.user_id,
-        u.username as user_name,
-        q.created_at,
-        (SELECT COUNT(*) FROM answerTable WHERE question_id = q.id) as answer_count
-      FROM questionTabel q
-      JOIN userTable u ON q.user_id = u.id
-      WHERE q.id = ?
-    `,
+            SELECT 
+                q.id as question_id,
+                q.title,
+                q.description as content,
+                q.user_id,
+                u.username as user_name,
+                q.created_at,
+                (SELECT COUNT(*) FROM answerTable WHERE question_id = q.id) as answer_count
+            FROM questionTabel q
+            JOIN userTable u ON q.user_id = u.id
+            WHERE q.id = ?
+        `,
       [questionId],
     );
 
@@ -96,7 +94,7 @@ export const getSingleQuestion = async (req, res) => {
   }
 };
 
-// POST /api/question
+// POST /api/questions/
 export const postQuestion = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -142,7 +140,7 @@ export const postQuestion = async (req, res) => {
   }
 };
 
-// PUT /api/question/:question_id
+// PUT /api/questions/:question_id
 export const updateQuestion = async (req, res) => {
   try {
     const questionId = req.params.question_id;
@@ -211,7 +209,7 @@ export const updateQuestion = async (req, res) => {
   }
 };
 
-// DELETE /api/question/:question_id
+// DELETE /api/questions/:question_id
 export const deleteQuestion = async (req, res) => {
   try {
     const questionId = req.params.question_id;
