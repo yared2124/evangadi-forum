@@ -1,8 +1,6 @@
-import db from "../config/db.js";
+import db from "../db/dbconfig.js";
 
-// ==================== ANSWER ENDPOINTS ====================
-
-// GET /api/answer/:question_id
+// GET /api/answers/:question_id
 export const getAnswersForQuestion = async (req, res) => {
   try {
     const questionId = req.params.question_id;
@@ -31,17 +29,17 @@ export const getAnswersForQuestion = async (req, res) => {
 
     const [answers] = await db.query(
       `
-      SELECT 
-        a.id as answer_id,
-        a.answer as content,
-        u.id as user_id,
-        u.username as user_name,
-        a.created_at
-      FROM answerTable a
-      JOIN userTable u ON a.user_id = u.id
-      WHERE a.question_id = ?
-      ORDER BY a.created_at ASC
-    `,
+            SELECT 
+                a.id as answer_id,
+                a.answer as content,
+                u.id as user_id,
+                u.username as user_name,
+                a.created_at
+            FROM answerTable a
+            JOIN userTable u ON a.user_id = u.id
+            WHERE a.question_id = ?
+            ORDER BY a.created_at ASC
+        `,
       [questionId],
     );
 
@@ -62,58 +60,7 @@ export const getAnswersForQuestion = async (req, res) => {
   }
 };
 
-// GET /api/answer/:answer_id/single
-export const getSingleAnswer = async (req, res) => {
-  try {
-    const answerId = req.params.answer_id;
-
-    if (!answerId || isNaN(answerId)) {
-      return res.status(400).json({
-        success: false,
-        error: "Bad Request",
-        message: "Invalid answer ID",
-      });
-    }
-
-    const [answers] = await db.query(
-      `
-      SELECT 
-        a.id as answer_id,
-        a.answer as content,
-        u.id as user_id,
-        u.username as user_name,
-        a.question_id,
-        a.created_at
-      FROM answerTable a
-      JOIN userTable u ON a.user_id = u.id
-      WHERE a.id = ?
-    `,
-      [answerId],
-    );
-
-    if (answers.length === 0) {
-      return res.status(404).json({
-        success: false,
-        error: "Not Found",
-        message: "Answer not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: { answer: answers[0] },
-    });
-  } catch (error) {
-    console.error("Get single answer error:", error);
-    res.status(500).json({
-      success: false,
-      error: "Internal Server Error",
-      message: "An unexpected error occurred.",
-    });
-  }
-};
-
-// POST /api/answer
+// POST /api/answers/
 export const postAnswer = async (req, res) => {
   try {
     const { questionid, answer } = req.body;
@@ -173,7 +120,7 @@ export const postAnswer = async (req, res) => {
   }
 };
 
-// PUT /api/answer/:answer_id
+// PUT /api/answers/:answer_id
 export const updateAnswer = async (req, res) => {
   try {
     const answerId = req.params.answer_id;
@@ -229,7 +176,7 @@ export const updateAnswer = async (req, res) => {
   }
 };
 
-// DELETE /api/answer/:answer_id
+// DELETE /api/answers/:answer_id
 export const deleteAnswer = async (req, res) => {
   try {
     const answerId = req.params.answer_id;
